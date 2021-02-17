@@ -1,0 +1,3 @@
+﻿  Fractions.cpp
+C:\Users\thoma\source\repos\Fractions\Fractions\Fractions.h(20,3): warning C5030: attribute 'depreceated' is not recognized
+  Fractions.vcxproj -> C:\Users\thoma\source\repos\Fractions\Debug\Fractions.lib
