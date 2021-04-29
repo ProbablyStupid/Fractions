@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(504,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+  FractionsCore.cpp
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(8,45): warning C4302: '<function-style-cast>': truncation from 'const char *' to 'WCHAR'
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): warning C4477: 'fscanf_s' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'const char *'
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): message : this argument is used by a conversion specifier
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): warning C4473: 'fscanf_s' : not enough arguments passed for format string
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): message : the missing variadic argument 2 is required by format string '%s'
+D:\Fractions Project Again\Fractions\FractionsCore\FractionsCore.cpp(19,17): message : this argument is used as a buffer size
+  FractionsCore.vcxproj -> D:\Fractions Project Again\Fractions\x64\Debug\Fractions Core.lib
