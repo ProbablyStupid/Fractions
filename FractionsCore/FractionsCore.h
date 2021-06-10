@@ -243,10 +243,30 @@ typedef bool fractions_core_geometry_mode;
 #define FRACTIONS_CORE_STATIC_GEOMETRY true
 #define FRACTIONS_CORE_DYNAMIC_GEMOETRY false
 
+typedef struct fractions_core_texture
+{
+	
+	unsigned int ID;
+	unsigned int tex_type;
+	unsigned int width, height;
+	unsigned int bits_per_pixel;
+	unsigned int channel; // e.g. RGBA -> 4
+
+	std::vector<unsigned char> image;
+
+} fractions_core_texture;
+
+// TODO
+
+void set_current_fractions_core_texture(fractions_core_texture*);
+void supply_fractions_core_texture_img(std::vector<unsigned char>*);
+void flush_current_fractions_core_texture();
+
 typedef struct fractions_core_object_configuration
 {
 	fractions_core_vertex_data v_data;
 	fractions_core_geometry_mode g_mode;
+
 } fractions_core_object_configuration;
 
 typedef struct fractions_core_object
@@ -261,12 +281,17 @@ typedef struct fractions_core_object
 
 	fractions_core_shader_uniforms uniforms;
 
+	fractions_core_texture texture;
+	bool has_fractions_core_texture = false;
+
 } fractions_core_object;
 
 void create_fractions_core_object(fractions_core_object*);
 void destroy_fractions_core_object(fractions_core_object*);
 void append_fractions_core_object(fractions_core_object*);
 void remove_fractions_core_object(fractions_core_object*);
+
+typedef void (*object_live_uniform)(fractions_core_object*);
 
 // FRACTIONS CORE CONTEXT
 
@@ -286,6 +311,11 @@ typedef struct fractions_core_context
 	// TODO: this needs some rework...
 	std::vector<fractions_core_object*> fractions_core_rendering_queue;
 
+	std::vector<basic_action> fractions_core_loop_events;
+	std::vector<object_live_uniform> fractions_core_object_live_uniforms;
+
+	bool loop_shall_stop = false;
+
 } fractions_core_context;
 
 void supply_fractions_core_context(fractions_core_context*);
@@ -297,6 +327,12 @@ void fractions_core_context_make_engine();
 //void initialize_fractions_core_context_renderer();
 
 void start_fractions_core_loop();
+void stop_fractions_core_loop();
+
+// The function to be added first will be run first.
+// Functions are executed after rendering
+void add_fractions_core_loop_events(basic_action);
+void add_fractions_core_object_live_uniform(object_live_uniform);
 
 #ifdef FRACTIONS_CORE_API_OPENGL_TEST_PROGRAM
 

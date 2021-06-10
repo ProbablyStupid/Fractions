@@ -131,4 +131,11 @@ namespace ff
 		for (int i = 0; i < this->files.size(); i++)
 			this->read_next();
 	}
+
+	PNG_data* read_PNG(std::string filename)
+	{
+		PNG_data* myData = new PNG_data;
+		lodepng::decode(myData->tex, myData->witdh, myData->height, filename);
+		return myData;
+	}
 }

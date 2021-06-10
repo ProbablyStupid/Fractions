@@ -206,7 +206,7 @@ void fractions_core_context_make_engine()
 
 static void _rendering_loop()
 {
-	while (!current_context->window_should_close)
+	while (!current_context->window_should_close && !current_context->loop_shall_stop)
 	{
 
 		glfwPollEvents();
@@ -233,25 +233,52 @@ static void _rendering_loop()
 			}
 			if (o->uniforms.I_uniforms)
 			{
+				int location;
 				for (int i = 0; i < o->uniforms.uniforms_I.size; i++)
 				{
-
+					location = glGetUniformLocation(o->shader_program,
+						o->uniforms.uniforms_F.data[i].uniform_name);
+					GLCall(glUniform1i(location, o->uniforms.uniforms_I.data[i].VALUE));
 				}
 			}
 			if (o->uniforms.UI_uniforms)
 			{
+				int location;
 				for (int i = 0; i < o->uniforms.uniforms_UI.size; i++)
 				{
-
+					location = glGetUniformLocation(o->shader_program,
+						o->uniforms.uniforms_F.data[i].uniform_name);
+					GLCall(glUniform1ui(location, o->uniforms.uniforms_UI.data[i].VALUE));
 				}
 			}
 			if (o->uniforms.M_uniforms)
 			{
+				int location;
 				for (int i = 0; i < o->uniforms.uniforms_M.size; i++)
 				{
-
+					location = glGetUniformLocation(o->shader_program,
+						o->uniforms.uniforms_F.data[i].uniform_name);
+					GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, 
+						glm::value_ptr(o->uniforms.uniforms_M.data[i].matrix)));
 				}
 			}
+			if (o->uniforms.V4_uniforms)
+			{
+				int location;
+				for (int i = 0; i < o->uniforms.uniforms_V4.size; i++)
+				{
+					location = glGetUniformLocation(o->shader_program,
+						o->uniforms.uniforms_V4.data[i].uniform_name);
+					GLCall(glUniform4f(location, 
+						o->uniforms.uniforms_V4.data[i].value.one,
+						o->uniforms.uniforms_V4.data[i].value.two,
+						o->uniforms.uniforms_V4.data[i].value.three,
+						o->uniforms.uniforms_V4.data[i].value.four));
+				}
+			}
+
+			for (object_live_uniform i : current_context->fractions_core_object_live_uniforms)
+				i(o);
 
 			GLCall(glBindVertexArray(o->vao));
 			glDrawArrays(GL_TRIANGLES, 0, 
@@ -260,12 +287,26 @@ static void _rendering_loop()
 		}
 
 		glfwSwapBuffers(current_context->window);
+		
+		for (basic_action i : current_context->fractions_core_loop_events)
+			i();
 	}
 }
 
 void start_fractions_core_loop()
 {
-	std::cout << "starting rendering loop!" << std::endl;
+	std::cout << "starting core loop!" << std::endl;
 	_rendering_loop();
-	std::cout << "rendering loop ended!" << std::endl;
+	std::cout << "core loop ended!" << std::endl;
+}
+
+void stop_fractions_core_loop()
+{
+	std::cout << "stopping core loop..." << std::endl;
+	current_context->loop_shall_stop = true;
+}
+
+void add_fractions_core_loop_events(basic_action action)
+{
+
 }

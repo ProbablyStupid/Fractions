@@ -1,13 +1,21 @@
 #include <FractionsCore.h>
+#include <FractionsLog.h>
 
 void on_close()
 {
 	std::cout << "window should close" << std::endl;
 	glfwTerminate();
+	exit(0);
+}
+
+void on_loop()
+{
+	fout << "YES";
 }
 
 int main()
 {
+
 	fractions_core_context* context = new fractions_core_context;
 	context->window_width = 500;
 	context->window_height = 500;
@@ -18,6 +26,8 @@ int main()
 	set_fractions_core_context();
 	fractions_core_context_make_window();
 	fractions_core_context_make_engine();
+
+	add_fractions_core_loop_events(on_loop);
 
 	fractions_core_shader_identifer shader_i;
 	std::string source_code = fractions_core_get_file_text_s(

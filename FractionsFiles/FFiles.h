@@ -8,6 +8,8 @@
 #include <vector>
 #include <stack>
 
+#include <lodepng.h>
+
 #define _FF ff::
 
 namespace ff {
@@ -63,4 +65,12 @@ namespace ff {
 	private:
 	};
 	//
+
+	typedef struct PNG_data
+	{
+		std::vector<unsigned char> tex;
+		unsigned witdh, height;
+	} PNG_data;
+
+	PNG_data* read_PNG(std::string filename);
 }
