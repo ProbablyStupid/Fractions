@@ -8,9 +8,23 @@ void on_close()
 	exit(0);
 }
 
-void on_loop()
+fractions_core_object obj;
+
+fractions_core_matrix projection(1.0);
+
+void on_loop(fractions_core_object* i)
 {
-	fout << "YES";
+	fractions_core_live_uniform_F(i, "red", 1.0f);
+
+	fractions_core_matrix view(1.0);
+	fractions_core_matrix model(1.0);
+
+	model = glm::rotate(model, 10.0f, glm::vec3(0.5f, 1.0f, 0.0f));
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+	fractions_core_live_uniform_M(i, "projection", projection);
+	fractions_core_live_uniform_M(i, "view", view);
+	fractions_core_live_uniform_M(i, "model", model);
 }
 
 int main()
@@ -27,12 +41,15 @@ int main()
 	fractions_core_context_make_window();
 	fractions_core_context_make_engine();
 
-	add_fractions_core_loop_events(on_loop);
+	projection = glm::perspective(90.0f,
+		(float)context->window_width / (float)context->window_height,
+		0.1f, 1000.0f);
 
 	fractions_core_shader_identifer shader_i;
 	std::string source_code = fractions_core_get_file_text_s(
-		"D:\\Fractions Project Again\\Fractions\\FractionsCore\\resources\\vertexbasic.shader"
+		"FractionsCore\\resources\\vertexbasic.shader"
 	);
+	
 	shader_i.source_code = source_code.c_str();
 	shader_i.type = FRACTIONS_CORE_VERTEX_SHADER;
 
@@ -40,8 +57,9 @@ int main()
 
 	fractions_core_shader_identifer shader_ii;
 	std::string source_code_i = fractions_core_get_file_text_s(
-		"D:\\Fractions Project Again\\Fractions\\FractionsCore\\resources\\fragmentbasic.shader"
+		"FractionsCore\\resources\\fragmentbasic.shader"
 	);
+	
 	shader_ii.source_code = source_code_i.c_str();
 	shader_ii.type = FRACTIONS_CORE_FRAGMENT_SHADER;
 
@@ -49,21 +67,14 @@ int main()
 
 	fractions_core_shader_program shader
 		= create_fractions_core_shader_program();
+	
 	link_fractions_core_shader_fractions_core_shader_program(shader, vertex_shader);
 	link_fractions_core_shader_fractions_core_shader_program(shader, fragment_shader);
+
 	finalize_fractions_core_shader_program(shader);
+	
 	delete_fractions_core_shader(vertex_shader);
 	delete_fractions_core_shader(fragment_shader);
-
-	fractions_core_shader_uniforms u;
-	u.F_uniforms = true;
-
-	fractions_core_shader_uniform_F red_color_uniform;
-	red_color_uniform.uniform_name = "red";
-	red_color_uniform.value = 1.0f;
-
-	u.uniforms_F.size = 1;
-	u.uniforms_F.data = &red_color_uniform;
 
 	fractions_core_object_configuration config;
 	config.g_mode = FRACTIONS_CORE_STATIC_GEOMETRY;
@@ -78,11 +89,11 @@ int main()
 	config.v_data.size = sizeof(data);
 	config.v_data.stride = 0;
 
-	fractions_core_object obj;
 	obj.config = config;
 	obj.visible = true;
 	obj.shader_program = shader;
-	obj.uniforms = u;
+	obj.on_draw_event = on_loop;
+
 	create_fractions_core_object(&obj);
 	append_fractions_core_object(&obj);
 

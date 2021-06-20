@@ -131,6 +131,7 @@ static bool GLLogCall()
 typedef unsigned int fractions_core_id;
 typedef void (*basic_action)(void);
 typedef unsigned long long int fractions_core_size;
+#define fractions_core_matrix glm::mat4
 
 #ifndef NO_FRACTIONS_CORE_FILE_IO
 
@@ -178,7 +179,7 @@ typedef struct fractions_core_shader_uniform_F
 typedef struct fractions_core_shader_uniform_M {
 
 	const char* uniform_name;
-	glm::mat4 matrix;
+	fractions_core_matrix matrix;
 
 } fractions_core_shader_uniform_M;
 
@@ -260,7 +261,7 @@ typedef struct fractions_core_texture
 
 void set_current_fractions_core_texture(fractions_core_texture*);
 void supply_fractions_core_texture_img(std::vector<unsigned char>*);
-void flush_current_fractions_core_texture();
+void flush_current_fractions_core_texture(); // TODO : what does / should this do again?
 
 typedef struct fractions_core_object_configuration
 {
@@ -268,6 +269,11 @@ typedef struct fractions_core_object_configuration
 	fractions_core_geometry_mode g_mode;
 
 } fractions_core_object_configuration;
+
+//
+typedef struct fractions_core_object;
+typedef void (*object_live_uniform)(fractions_core_object*);
+//
 
 typedef struct fractions_core_object
 {
@@ -284,14 +290,16 @@ typedef struct fractions_core_object
 	fractions_core_texture texture;
 	bool has_fractions_core_texture = false;
 
+	// default value for error checking
+	// will not execute if nullptr
+	object_live_uniform on_draw_event = nullptr;
+
 } fractions_core_object;
 
 void create_fractions_core_object(fractions_core_object*);
 void destroy_fractions_core_object(fractions_core_object*);
 void append_fractions_core_object(fractions_core_object*);
 void remove_fractions_core_object(fractions_core_object*);
-
-typedef void (*object_live_uniform)(fractions_core_object*);
 
 // FRACTIONS CORE CONTEXT
 
@@ -311,8 +319,8 @@ typedef struct fractions_core_context
 	// TODO: this needs some rework...
 	std::vector<fractions_core_object*> fractions_core_rendering_queue;
 
-	std::vector<basic_action> fractions_core_loop_events;
-	std::vector<object_live_uniform> fractions_core_object_live_uniforms;
+	// TODO: perhaps macro nullptr into something like FNULL
+	basic_action loop_event = nullptr;
 
 	bool loop_shall_stop = false;
 
@@ -331,8 +339,11 @@ void stop_fractions_core_loop();
 
 // The function to be added first will be run first.
 // Functions are executed after rendering
-void add_fractions_core_loop_events(basic_action);
-void add_fractions_core_object_live_uniform(object_live_uniform);
+void set_fractions_core_loop_events(basic_action);
+
+void fractions_core_live_uniform_V4(fractions_core_object*, const char*, fractions_core_vec4f value);
+void fractions_core_live_uniform_F(fractions_core_object*, const char*, float value);
+void fractions_core_live_uniform_M(fractions_core_object*, const char*, fractions_core_matrix value);
 
 #ifdef FRACTIONS_CORE_API_OPENGL_TEST_PROGRAM
 

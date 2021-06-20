@@ -24,4 +24,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\fragmentbasic.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\vertexbasic.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

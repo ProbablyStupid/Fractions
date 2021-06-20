@@ -202,6 +202,8 @@ void fractions_core_context_make_engine()
 		std::cout << glewGetErrorString(error) << std::endl;
 		__DEBUGBREAK();
 	}
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 static void _rendering_loop()
@@ -215,11 +217,12 @@ static void _rendering_loop()
 			current_context->close_event();
 
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (fractions_core_object* o : current_context->fractions_core_rendering_queue)
 		{
 			GLCall(glUseProgram(o->shader_program)); 
+
 
 			if (o->uniforms.F_uniforms)
 			{
@@ -277,19 +280,20 @@ static void _rendering_loop()
 				}
 			}
 
-			for (object_live_uniform i : current_context->fractions_core_object_live_uniforms)
-				i(o);
-
 			GLCall(glBindVertexArray(o->vao));
 			glDrawArrays(GL_TRIANGLES, 0, 
 				(o->config.v_data.size / o->config.v_data.vertex_data_points));
 			GLCall(glBindVertexArray(0));
+			
+			if (o->on_draw_event != nullptr)
+				o->on_draw_event(o);
+
 		}
 
 		glfwSwapBuffers(current_context->window);
 		
-		for (basic_action i : current_context->fractions_core_loop_events)
-			i();
+		if (current_context->loop_event != nullptr)
+		current_context->loop_event();
 	}
 }
 
@@ -306,7 +310,27 @@ void stop_fractions_core_loop()
 	current_context->loop_shall_stop = true;
 }
 
-void add_fractions_core_loop_events(basic_action action)
+void set_fractions_core_loop_events(basic_action action)
 {
+	current_context->loop_event = action;
+}
 
+void fractions_core_live_uniform_V4(fractions_core_object* obj, const char* name,
+	fractions_core_vec4f value)
+{
+	int location = glGetUniformLocation(obj->shader_program, name);
+	glUniform4f(location, value.one, value.two, value.three, value.four);
+}
+
+void fractions_core_live_uniform_F(fractions_core_object* obj, const char* name, float value)
+{
+	int location = glGetUniformLocation(obj->shader_program, name);
+	glUniform1f(location, value);
+}
+
+void fractions_core_live_uniform_M(fractions_core_object* obj, const char* name,
+	fractions_core_matrix value)
+{
+	int location = glGetUniformLocation(obj->shader_program, name);
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
