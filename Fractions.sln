@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31025.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fractions Core", "FractionsCore\FractionsCore.vcxproj", "{BE2F9DEA-A908-4EBE-9941-E87289E5F537}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fractions Executeable", "Fractions Executeable\Fractions Executeable.vcxproj", "{BA48B7D3-33FD-4412-918D-11E3A9CE19BA}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9F55BA1D-027D-495F-8ABC-2CBA968B40CE} = {9F55BA1D-027D-495F-8ABC-2CBA968B40CE}
+		{ED08F983-902D-4BEE-A80A-A319B9B2977C} = {ED08F983-902D-4BEE-A80A-A319B9B2977C}
+		{C29F179A-3A93-4E06-A78A-9A539DE8E2C8} = {C29F179A-3A93-4E06-A78A-9A539DE8E2C8}
 		{28882CBE-4D62-4F24-8A29-CC40B385B568} = {28882CBE-4D62-4F24-8A29-CC40B385B568}
 		{BE2F9DEA-A908-4EBE-9941-E87289E5F537} = {BE2F9DEA-A908-4EBE-9941-E87289E5F537}
 	EndProjectSection
@@ -17,6 +20,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FractionsFiles", "Fractions
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fractions API", "Fractions API\Fractions API.vcxproj", "{ED08F983-902D-4BEE-A80A-A319B9B2977C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE2F9DEA-A908-4EBE-9941-E87289E5F537} = {BE2F9DEA-A908-4EBE-9941-E87289E5F537}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lodepng", "lodepng\lodepng.vcxproj", "{9F55BA1D-027D-495F-8ABC-2CBA968B40CE}"
 EndProject

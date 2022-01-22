@@ -1,5 +1,5 @@
 #include "FractionsCore.h"
-
+/*
 static fractions_core_context* current_context, * given_context;
 
 static void glfw_onError(int error, const char* description)
@@ -8,7 +8,7 @@ static void glfw_onError(int error, const char* description)
 	MessageBox(NULL, (LPCWSTR)WCHAR(description), L"GLFW error", MB_OK);
 }
 
-/* primitive C style text file reading : THERE IS NO GUARANTEE THAT THIS WILL WORK */
+// primitive C style text file reading : THERE IS NO GUARANTEE THAT THIS WILL WORK
 F_NODISCARD const char* fractions_core_get_file_text_f(const char* filepath)
 {
 	FILE* file;
@@ -154,9 +154,11 @@ void remove_fractions_core_object(fractions_core_object* object)
 		counter++;
 	}
 	if (found)
-		current_context->fractions_core_rendering_queue.erase(current_context->fractions_core_rendering_queue.begin() + id);
+		current_context->fractions_core_rendering_queue
+		.erase(current_context->fractions_core_rendering_queue.begin() + id);
 	else
-		/* TODO:  report some sort of error */;
+		// TODO:  report some sort of error
+		;
 }
 
 void supply_fractions_core_context(fractions_core_context* context)
@@ -184,6 +186,9 @@ void fractions_core_context_make_window()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
+	// user specified
+	glfwWindowHint(GLFW_RESIZABLE, current_context->window_resizable);
 
 	current_context->window = glfwCreateWindow(current_context->window_width,
 		current_context->window_height, current_context->window_title, NULL, NULL);
@@ -333,4 +338,185 @@ void fractions_core_live_uniform_M(fractions_core_object* obj, const char* name,
 {
 	int location = glGetUniformLocation(obj->shader_program, name);
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}
+*/
+
+namespace fractions_core
+{
+	// if any object has the uuid 0 it is a faulty object and can be disregarded
+	// the algorithm first increments the uuid, then returns it
+	uuid current_uuid = 0;
+
+	uuid generate_uuid()
+	{
+		current_uuid++;
+		return current_uuid;
+	}
+
+	context& current_context, supplied_context;
+
+#define con current_context
+
+#define object(x) con.objects.at(x)
+#define scene(x) con.scenes.at(x)
+#define shader(x) con.shaders.at(x)
+#define texture(x) con.textures.at(x)
+
+	void create_api_object(uuid o)
+	{
+		unsigned int vao = 0;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		unsigned int vbo = 0;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(vbo, (object(o).vertex_count * object(o).vertex_size) * sizeof(float),
+			object(o).verticies, GL_ARRAY_BUFFER);
+
+		glVertexAttribPointer(1, 3, GL_FLOAT, false,
+			object(o).vertex_size * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void create_api_shader(uuid shader, uuid object)
+	{
+		// TODO
+	}
+
+	void create_all_api_shader(uuid o)
+	{
+		for (uuid i : object(o).shaders)
+		{
+			if (shader(i).has_api_object == false)
+				create_api_shader(i, o);
+		}
+	}
+
+	void supply_context(context& c)
+	{
+		supplied_context = c;
+	}
+
+	void update_context()
+	{
+		current_context = supplied_context;
+		supplied_context = {};
+	}
+
+	void make_window()
+	{
+		if (!glfwInit())
+			throw std::runtime_error("UNABLE TO INITIALIZE GLFW");
+		GLFWwindow* window;
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+		if (con.window_resizable != boolean::Undefined)
+			glfwWindowHint(GLFW_RESIZABLE, (bool)con.window_resizable);
+
+		auto [width, height] = con.window_dimension;
+		window = glfwCreateWindow(width, height, con.window_title, glfwGetPrimaryMonitor(),
+			NULL);
+
+		con.api_window = window;
+	}
+
+	void make_engine()
+	{
+		glfwMakeContextCurrent(con.api_window);
+		glewExperimental = true;
+		unsigned error = glewInit();
+		if (error != GLEW_OK)
+			throw std::runtime_error("UNABLE TO INITIALIZE GLEW");
+	}
+	
+	void engine_update();
+
+	void engage()
+	{
+		con.current_scene = con.primary_scene;
+		if (!con.scenes.at(con.primary_scene).loaded)
+			load_scene(con.primary_scene);
+		show_scene(con.primary_scene);
+
+		while (!con.window_should_close)
+			engine_update();
+	}
+
+	//
+
+	void bind_draw(function_pointer p)
+	{ con.on_draw_functions.push_back(p); }
+
+	void bind_ObjectDraw(object& o, function_pointer p)
+	{o.on_draw.push_back(p);}
+
+	void bind_SceneDraw(scene& s, function_pointer p)
+	{
+		s.on_draw.push_back(p);
+	}
+
+	void append_object(object& o)
+	{
+		o.id = generate_uuid();
+		con.objects.insert({o.id, o});
+		if (o.loaded != false)
+			create_api_object(o.id);
+		for (uuid i : o.shaders)
+			if (shader(i).loaded != false)
+				create_api_shader(i, o.id);
+	}
+
+	void append_scene(scene& s)
+	{
+		s.id = generate_uuid();
+		con.scenes[s.id] = s;
+	}
+
+	void append_shader(shader& s)
+	{
+		s.id = generate_uuid();
+		con.shaders[s.id] = s;
+	}
+
+	void append_texture(texture& t)
+	{
+		t.id = generate_uuid();
+		con.textures[t.id] = t;
+	}
+
+	void draw_object(uuid i)
+	{
+		for (function_pointer i : object(i).on_draw)
+			i();
+		glBindVertexArray(object(i).api_id);
+		glDrawArrays(GL_TRIANGLES, 0, object(i).vertex_count);
+		glBindVertexArray(0);
+	}
+
+	void update_object(uuid i)
+	{
+		// perhaps have update functions?
+		// or physics?
+	}
+
+	void engine_update()
+	{
+		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		for (uuid i : con.current_scene.objects)
+		{
+			if (object(i).visible)
+				draw_object(i);
+			if (object(i).acting)
+				update_object(i);
+		}
+	}
 }

@@ -1,25 +1,25 @@
 ﻿  lodepng.cpp
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(712,54): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(730,35): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(731,39): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(754,37): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(771,38): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(3728,78): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4698,33): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4920,60): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4925,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4926,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4927,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4928,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4929,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4930,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(4931,78): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5122,3): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5146,7): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5180,62): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5197,3): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5219,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5250,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5363,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\lodepng\lodepng.cpp(5441,33): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
-  lodepng.vcxproj -> C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\x64\Debug\lodepng.lib
+D:\Programming\Fractions\lodepng\lodepng.cpp(712,54): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+D:\Programming\Fractions\lodepng\lodepng.cpp(730,35): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(731,39): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+D:\Programming\Fractions\lodepng\lodepng.cpp(754,37): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(771,38): warning C4267: '=': conversion from 'size_t' to 'unsigned short', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(3728,78): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4698,33): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4920,60): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4925,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4926,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4927,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4928,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4929,83): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4930,94): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(4931,78): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5122,3): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5146,7): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5180,62): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5197,3): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5219,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5250,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5363,57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\Programming\Fractions\lodepng\lodepng.cpp(5441,33): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+  lodepng.vcxproj -> D:\Programming\Fractions\x64\Debug\lodepng.lib

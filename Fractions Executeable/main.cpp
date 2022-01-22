@@ -1,5 +1,6 @@
 #include <FractionsCore.h>
 #include <FractionsLog.h>
+#include <../Fractions API/Frac.h>
 
 void on_close()
 {

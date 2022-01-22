@@ -31,8 +31,8 @@
 
 #pragma once
 
-#define GLEW_STATIC
-
+// old deprecated code
+/*
 #include <gl/glew.h>
 #include <gl/wglew.h>
 #include <GLFW/glfw3.h>
@@ -135,9 +135,9 @@ typedef unsigned long long int fractions_core_size;
 
 #ifndef NO_FRACTIONS_CORE_FILE_IO
 
-/* uses the C file API */
+// uses the C file API 
 F_NODISCARD const char* fractions_core_get_file_text_f(const char*);
-/* uses the C++ file API */
+// uses the C++ file API 
 F_NODISCARD std::string fractions_core_get_file_text_s(const char*);
 
 #else
@@ -308,6 +308,7 @@ typedef struct fractions_core_context
 	// both window properties must be defined
 	int window_width, window_height;
 	const char* window_title;
+	bool window_resizable;
 
 	bool window_should_close;
 	basic_action close_event;
@@ -470,3 +471,204 @@ void fractions_core_live_uniform_M(fractions_core_object*, const char*, fraction
 }
 
 #endif
+*/
+
+// new code
+#define GLEW_STATIC
+
+#include <gl/glew.h>
+#include <gl/wglew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <unordered_map>
+
+typedef std::pair<unsigned, unsigned> dimension;
+typedef enum boolean
+{
+	True = 1, False = 0, Undefined = 2
+} boolean;
+#define undef boolean::Undefined;
+typedef uint64_t uuid; 
+
+typedef void(*function_pointer)(void);
+
+namespace fractions_core {
+
+	// uuid
+	
+	uuid generate_uuid();
+
+	// context
+
+	typedef struct scene;
+	typedef struct shader;
+	typedef struct object;
+
+	typedef struct context
+	{
+		// window properties
+		dimension window_dimension;
+		const char* window_title;
+		boolean window_resizable;
+
+		// todo
+		boolean fullscreen;
+		
+		bool window_should_close;
+
+		GLFWwindow* api_window;
+
+		// engine properties
+		bool engine_active = false;
+
+		// engine
+		std::unordered_map<uuid, scene&> scenes;
+		std::unordered_map<uuid, shader&> shaders;
+		// is this really neccessary?
+		std::unordered_map<uuid, object&> objects;
+		std::unordered_map<uuid, texture&> textures;
+
+		// should this really be a vector?
+		// let's keep it fool proof
+		std::vector<function_pointer> on_draw_functions;
+
+		// the scene that loads on startup
+		uuid primary_scene;
+
+		// the scene that is currently being displayed
+		uuid current_scene;
+	} fractions_core_context;
+
+	// context affectING
+	void supply_context(context&);
+	void update_context();
+
+	// context affectED
+	void make_window();
+	void make_engine();
+
+	// (we like star trek)
+	// loads the primary scene and starts the rendering loop
+	void engage();
+
+	// engine
+
+	void bind_draw(function_pointer);
+
+	typedef struct shader
+	{
+		uuid id;
+		std::string raw_text;
+		bool interpreted = false;
+
+		boolean loaded = undef;
+		boolean has_api_object = undef;
+
+		uint64_t glid;
+	} shader;
+
+	typedef struct texture
+	{
+		const char* texture;
+		// R, G, B, A
+		size_t stride;
+		size_t length;
+		uuid id;
+
+		boolean loaded = undef;
+		boolean has_api_object = undef;
+	} texture;
+
+	typedef struct object
+	{
+		uuid id;
+
+		// x, y, z
+		// location of the object in the local coordinate system
+		float* location;
+
+		std::vector<uuid> shaders;
+
+		bool visible;
+		bool acting = false;
+
+		std::vector<function_pointer> on_draw;
+
+		unsigned int api_id;
+
+		// x, y, z
+		float* verticies;
+		// how many floats one vertex is
+		unsigned vertex_size;
+		// amount of VERTICIES e.g. one coordinate
+		// to get the total size: vertex_size * vertex_count
+		uint64_t vertex_count;
+
+		boolean loaded = undef;
+		boolean has_api_object = undef;
+
+		// api
+
+		// GL -> Vertex Array
+		unsigned int API_KEY0;
+		// GL -> Buffer
+		unsigned int API_KEY1;
+		 
+		// not yet implemented #TODO
+		bool expr_normalization = false;
+
+	} object;
+
+	void bind_ObjectDraw(object&, function_pointer);
+
+	typedef struct scene
+	{
+		uuid id;
+
+		bool visible = false;
+		std::vector<uuid> objects;
+
+		std::vector<function_pointer> on_draw;
+
+		// scenes do not have a boolean loaded as they do not need one
+		// they are simply an assortment of objects
+		// the objects can be loaded
+		// and if all the objects are loaded then the scene is effectively
+		// loaded. But then the `boolean` `loaded` wouldn't make any
+		// sense, as it is just the check of whether every objec is loaded.
+		// Therefore, it's easier to simply call a function to check if it
+		// is loaded, then have a variable that needs the call of a function.
+		// (This system may get redesigned in the future however, because
+		// I may have thought of a way to outsmart myself).
+	} scene;
+
+	void bind_SceneDraw(scene&, function_pointer);
+
+	void append_object(object&);
+	void append_scene(scene&);
+	void append_shader(shader&);
+	void append_texture(texture&);
+
+	// TODO : figure this one out
+	void show_scene(uuid);
+	void hide_scene(uuid);
+	void show_object(uuid);
+	void hide_object(uuid);
+
+	// TODO: Maybe create two seperate functions so that the VAO may exist
+	//		 without the coords in place so that shaders can already be
+	//		 applied.
+	void create_api_object(uuid);
+	// will only work if the object already has an API object
+	void create_api_shader(uuid shader, uuid object);
+	void create_all_api_shader(uuid object);
+}

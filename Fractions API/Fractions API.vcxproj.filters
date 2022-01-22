@@ -18,5 +18,16 @@
     <ClInclude Include="Frac.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FractionsInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FractionsObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FractionsInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿  main.cpp
-C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\FractionsCore\FractionsCore.h(274,37): warning C4091: 'typedef ': ignored on left of 'fractions_core_object' when no variable is declared
+D:\Programming\Fractions\FractionsCore\FractionsCore.h(274,37): warning C4091: 'typedef ': ignored on left of 'fractions_core_object' when no variable is declared
+Fractions Core.lib(glew.obj) : warning LNK4099: PDB 'glew_static.pdb' was not found with 'Fractions Core.lib(glew.obj)' or at 'D:\Programming\Fractions\x64\Debug\glew_static.pdb'; linking object as if no debug info
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-Fractions Core.lib(glew.obj) : warning LNK4099: PDB 'glew_static.pdb' was not found with 'Fractions Core.lib(glew.obj)' or at 'C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\x64\Debug\glew_static.pdb'; linking object as if no debug info
-  Fractions Executeable.vcxproj -> C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\x64\Debug\Fractions Executeable.exe
+  Fractions Executeable.vcxproj -> D:\Programming\Fractions\x64\Debug\Fractions Executeable.exe
