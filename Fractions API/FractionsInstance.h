@@ -8,7 +8,7 @@ typedef std::pair<unsigned, unsigned> dimensions;
 class FractionsInstance
 {
 private:
-	fractions_core_context context;
+	fractions_core::context context;
 public:
 
 	FractionsInstance() = default;

@@ -48,13 +48,13 @@ F_NODISCARD fractions_core_shader
 	create_fractions_core_shader(fractions_core_shader_identifer identifier)
 {
 	fractions_core_shader shader = glCreateShader(identifier.type);
-	
+
 	GLCall(;);
 
 	// maybe TOOD: IMPLEMENT A COUNT SYSTEM
 	GLCall(glShaderSource(shader, 1, &identifier.source_code, NULL));
 	GLCall(glCompileShader(shader));
-	
+
 	const char* shader_type_text;
 
 	switch (identifier.type)
@@ -79,7 +79,7 @@ F_NODISCARD fractions_core_shader
 	return shader;
 }
 
-F_NODISCARD fractions_core_shader_program 
+F_NODISCARD fractions_core_shader_program
 			create_fractions_core_shader_program()
 {
 	fractions_core_shader_program program = glCreateProgram();
@@ -105,7 +105,7 @@ void create_fractions_core_object(fractions_core_object* object)
 {
 	GLCall(glGenVertexArrays(1, &object->vao));
 	GLCall(glBindVertexArray(object->vao));
-	
+
 	unsigned int usage;
 	if (object->config.g_mode)
 		usage = GL_STATIC_DRAW;
@@ -181,7 +181,7 @@ void fractions_core_context_make_window()
 	glfwSetErrorCallback(glfw_onError);
 	if (!glfwInit())
 		__DEBUGBREAK();
-	
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
@@ -215,7 +215,6 @@ static void _rendering_loop()
 {
 	while (!current_context->window_should_close && !current_context->loop_shall_stop)
 	{
-
 		glfwPollEvents();
 
 		if (glfwWindowShouldClose(current_context->window))
@@ -226,8 +225,7 @@ static void _rendering_loop()
 
 		for (fractions_core_object* o : current_context->fractions_core_rendering_queue)
 		{
-			GLCall(glUseProgram(o->shader_program)); 
-
+			GLCall(glUseProgram(o->shader_program));
 
 			if (o->uniforms.F_uniforms)
 			{
@@ -266,7 +264,7 @@ static void _rendering_loop()
 				{
 					location = glGetUniformLocation(o->shader_program,
 						o->uniforms.uniforms_F.data[i].uniform_name);
-					GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, 
+					GLCall(glUniformMatrix4fv(location, 1, GL_FALSE,
 						glm::value_ptr(o->uniforms.uniforms_M.data[i].matrix)));
 				}
 			}
@@ -277,7 +275,7 @@ static void _rendering_loop()
 				{
 					location = glGetUniformLocation(o->shader_program,
 						o->uniforms.uniforms_V4.data[i].uniform_name);
-					GLCall(glUniform4f(location, 
+					GLCall(glUniform4f(location,
 						o->uniforms.uniforms_V4.data[i].value.one,
 						o->uniforms.uniforms_V4.data[i].value.two,
 						o->uniforms.uniforms_V4.data[i].value.three,
@@ -286,17 +284,16 @@ static void _rendering_loop()
 			}
 
 			GLCall(glBindVertexArray(o->vao));
-			glDrawArrays(GL_TRIANGLES, 0, 
+			glDrawArrays(GL_TRIANGLES, 0,
 				(o->config.v_data.size / o->config.v_data.vertex_data_points));
 			GLCall(glBindVertexArray(0));
-			
+
 			if (o->on_draw_event != nullptr)
 				o->on_draw_event(o);
-
 		}
 
 		glfwSwapBuffers(current_context->window);
-		
+
 		if (current_context->loop_event != nullptr)
 		current_context->loop_event();
 	}
@@ -353,109 +350,215 @@ namespace fractions_core
 		return current_uuid;
 	}
 
-	context& current_context, supplied_context;
+	static context* current_context, * supplied_context;
 
 #define con current_context
 
-#define object(x) con.objects.at(x)
-#define scene(x) con.scenes.at(x)
-#define shader(x) con.shaders.at(x)
-#define texture(x) con.textures.at(x)
+#define object(x) con->objects.at(x)
+#define scene(x) con->scenes[x]
+#define shader(x) con->shaders.at(x)
+#define texture(x) con->textures.at(x)
 
 	void create_api_object(uuid o)
 	{
 		unsigned int vao = 0;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
+		GLCall(glGenVertexArrays(1, &vao));
+		GLCall(glBindVertexArray(vao));
 
 		unsigned int vbo = 0;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(vbo, (object(o).vertex_count * object(o).vertex_size) * sizeof(float),
-			object(o).verticies, GL_ARRAY_BUFFER);
+		GLCall(glGenBuffers(1, &vbo));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, (object(o)->vertex_count * object(o)->vertex_size) * sizeof(float),
+			object(o)->verticies, 
+		//	object(o)->static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW)
+			GL_STATIC_DRAW
+		));
 
-		glVertexAttribPointer(1, 3, GL_FLOAT, false,
-			object(o).vertex_size * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
+		// TODO: standardize this in some way
+		GLCall(glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, (void*)0);
+		glEnableVertexAttribArray(1));
 
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		object(o)->api_id = vao;
+
+		GLCall(glBindVertexArray(0));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
+		object(o)->has_api_object = True;
 	}
 
-	void create_api_shader(uuid shader, uuid object)
+	// Also binds the shader to the object
+	void create_api_shader(uuid s, 
+		// TODO: This name needs to be fixed
+		uuid object)
 	{
-		// TODO
+#define _shader current_context->shaders.at(s)
+
+		GLCall(glBindVertexArray(object(object)->api_id));
+
+		const char* vsource = _shader->vertex_source.c_str();
+		debug(std::cout << vsource << std::endl);
+		int vlength = static_cast<int>(_shader->vertex_source.length());
+
+		// vertex shader
+		GLCall(auto vertex_shader = glCreateShader(GL_VERTEX_SHADER));
+
+		GLCall(glShaderSource(vertex_shader, 1, &vsource, &vlength));
+		GLCall(glCompileShader(vertex_shader));
+
+		// TODO: add support for more than vertex and fragment shader
+
+		// fragment shader
+
+		const char* fsource = _shader->fragment_source.c_str();
+		debug(std::cout << fsource << std::endl;)
+		int flength = static_cast<int>(_shader->fragment_source.length());
+
+		GLCall(auto fragment_shader = glCreateShader(GL_FRAGMENT_SHADER));
+
+		GLCall(glShaderSource(fragment_shader, 1, &fsource, &flength));
+		GLCall(glCompileShader(fragment_shader));
+
+
+		// Shader program
+
+		GLCall(_shader->api_id = glCreateProgram());
+
+		GLCall(glAttachShader(_shader->api_id, vertex_shader));
+		GLCall(glAttachShader(_shader->api_id, fragment_shader));
+
+		GLCall(glLinkProgram(_shader->api_id));
+		GLCall(glValidateProgram(_shader->api_id));
+
+		GLCall(glDeleteShader(vertex_shader));
+		GLCall(glDeleteShader(fragment_shader));
+
+		GLCall(glUseProgram(_shader->api_id));
+
+		GLCall(glBindVertexArray(0));
+#undef _shader
 	}
 
 	void create_all_api_shader(uuid o)
 	{
-		for (uuid i : object(o).shaders)
+		for (uuid i : object(o)->shaders)
 		{
-			if (shader(i).has_api_object == false)
+			if (shader(i)->has_api_object == false)
 				create_api_shader(i, o);
 		}
 	}
 
-	void supply_context(context& c)
+	bool is_scene_loaded(uuid s)
+	{
+		for (uuid i : current_context->scenes.at(s)->objects)
+			if (object(i)->loaded == False)
+				return false;
+		return true;
+	}
+
+	void supply_context(context* c)
 	{
 		supplied_context = c;
 	}
 
 	void update_context()
 	{
+		current_context = new context;
 		current_context = supplied_context;
-		supplied_context = {};
+	}
+
+	void internal_glfw_error_callback(int x, const char* y)
+	{
+		std::cout << y << std::endl;
+	}
+
+	void internal_glfw_window_close_callback(GLFWwindow* window)
+	{
+		std::cout << "window close requested by \t\t[[ GLFW ]]" << std::endl;
+		if (con->on_window_should_close != nullptr)
+			con->on_window_should_close();
 	}
 
 	void make_window()
 	{
 		if (!glfwInit())
 			throw std::runtime_error("UNABLE TO INITIALIZE GLFW");
-		GLFWwindow* window;
+		glfwSetErrorCallback(internal_glfw_error_callback);
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-		if (con.window_resizable != boolean::Undefined)
-			glfwWindowHint(GLFW_RESIZABLE, (bool)con.window_resizable);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+		
+		// resizable
+		if (con->window_resizable != boolean::Undefined)
+			glfwWindowHint(GLFW_RESIZABLE, (bool)con->window_resizable);
 
-		auto [width, height] = con.window_dimension;
-		window = glfwCreateWindow(width, height, con.window_title, glfwGetPrimaryMonitor(),
-			NULL);
+		// creating the window
+		auto [width, height] = con->window_dimension;
+		GLFWwindow* window =
+			glfwCreateWindow(width, height,
+				con->window_title, NULL, NULL);
+		con->api_window = window;
 
-		con.api_window = window;
+		glfwSetWindowCloseCallback(con->api_window, internal_glfw_window_close_callback);
 	}
 
 	void make_engine()
 	{
-		glfwMakeContextCurrent(con.api_window);
+		glfwMakeContextCurrent(con->api_window);
 		glewExperimental = true;
 		unsigned error = glewInit();
 		if (error != GLEW_OK)
+		{
+			std::cerr << "UNABLE TO INITIALIZE GLEW: " << glewGetErrorString(error) << std::endl;
 			throw std::runtime_error("UNABLE TO INITIALIZE GLEW");
+		}
+		con->engine_alive = true;
+
+		auto [width, height] = con->window_dimension;
+		glViewport(0, 0, width, height);
 	}
-	
+
+	void shutdown()
+	{
+		con->engine_alive = false;
+		con->engine_active = false;
+		glfwDestroyWindow(con->api_window);
+		glfwTerminate();
+	}
+
 	void engine_update();
 
 	void engage()
 	{
-		con.current_scene = con.primary_scene;
-		if (!con.scenes.at(con.primary_scene).loaded)
-			load_scene(con.primary_scene);
-		show_scene(con.primary_scene);
+		con->current_scene = con->primary_scene;
+		if (!is_scene_loaded(con->current_scene))
+			throw std::runtime_error("INVALID CURRENT SCENE");
+		show_scene(con->primary_scene);
 
-		while (!con.window_should_close)
+		while (con->engine_alive)
+		{
 			engine_update();
+		}
 	}
 
 	//
 
+	void bind_on_window_should_close(function_pointer p)
+	{
+		con->on_window_should_close = p;
+	}
+
 	void bind_draw(function_pointer p)
-	{ con.on_draw_functions.push_back(p); }
+	{
+		con->on_draw_functions.push_back(p);
+	}
 
 	void bind_ObjectDraw(object& o, function_pointer p)
-	{o.on_draw.push_back(p);}
+	{
+		o.on_draw.push_back(p);
+	}
 
 	void bind_SceneDraw(scene& s, function_pointer p)
 	{
@@ -465,39 +568,53 @@ namespace fractions_core
 	void append_object(object& o)
 	{
 		o.id = generate_uuid();
-		con.objects.insert({o.id, o});
+		con->objects[o.id] = &o;
 		if (o.loaded != false)
 			create_api_object(o.id);
 		for (uuid i : o.shaders)
-			if (shader(i).loaded != false)
+			if (shader(i)->loaded != false)
 				create_api_shader(i, o.id);
 	}
 
 	void append_scene(scene& s)
 	{
 		s.id = generate_uuid();
-		con.scenes[s.id] = s;
+		con->scenes[1] = &s;
 	}
 
 	void append_shader(shader& s)
 	{
 		s.id = generate_uuid();
-		con.shaders[s.id] = s;
+		con->shaders[s.id] = &s;
 	}
 
 	void append_texture(texture& t)
 	{
 		t.id = generate_uuid();
-		con.textures[t.id] = t;
+		con->textures[t.id] = &t;
 	}
 
-	void draw_object(uuid i)
+	void object_to_scene(uuid id, uuid s)
 	{
-		for (function_pointer i : object(i).on_draw)
+		scene(s)->objects.push_back(id);
+	}
+
+	void draw_object(uuid o)
+	{
+		for (function_pointer i : object(o)->on_draw)
 			i();
-		glBindVertexArray(object(i).api_id);
-		glDrawArrays(GL_TRIANGLES, 0, object(i).vertex_count);
-		glBindVertexArray(0);
+
+		GLCall(glBindVertexArray(object(o)->api_id));
+		glDrawArrays(GL_TRIANGLES, 0, object(o)->vertex_count);
+		GLCall(glBindVertexArray(0));
+	}
+
+	void show_scene(uuid s)
+	{
+		// TODO: perhaps make this a little smarter
+		scene(con->current_scene)->visible = false;
+		scene(s)->visible = true;
+		con->current_scene = s;
 	}
 
 	void update_object(uuid i)
@@ -509,14 +626,117 @@ namespace fractions_core
 	void engine_update()
 	{
 		glfwPollEvents();
+
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for (uuid i : con.current_scene.objects)
+		for (uuid i : scene(con->current_scene)->objects)
 		{
-			if (object(i).visible)
+			if (object(i)->visible)
 				draw_object(i);
-			if (object(i).acting)
+			if (object(i)->acting)
 				update_object(i);
 		}
+		
+		glfwSwapBuffers(con->api_window);
+	}
+
+	void test_api()
+	{
+		glfwInit();
+
+		glfwSetErrorCallback(internal_glfw_error_callback);
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
+		GLFWwindow* window = glfwCreateWindow(200, 200, "TEST WINDOW", NULL, NULL);
+
+		glfwMakeContextCurrent(window);
+
+		glewExperimental = true;
+		auto glew = glewInit();
+		if (glew != GLEW_OK)
+			std::cout << glewGetErrorString(glew) << std::endl;
+
+		glViewport(0, 0, 200, 200);
+
+		const float verticies[] =
+		{
+			0.0f, 0.0f, 1.0f,
+			0.5f, 1.0f, 1.0f,
+			1.0f, 0.0f, 1.0f,
+		};
+
+		unsigned int vao = 0;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		unsigned int vbo = 0;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), &verticies, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, (void*)0);
+		glEnableVertexAttribArray(1);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		glBindVertexArray(vao);
+
+		auto vertex = glCreateShader(GL_VERTEX_SHADER);
+		auto vfile = in_file("vertex.txt");
+		std::string vstring = *vfile.get_contents();
+		auto vsource = vstring.c_str();
+		std::cout << vsource << std::endl;
+		const GLint vlength = (const GLint)vstring.length();
+		
+		glShaderSource(vertex, 1, &vsource, &vlength);
+		glCompileShader(vertex);
+
+
+		auto fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		auto ffile = in_file("fragment.txt");
+		std::string fstring = *ffile.get_contents();
+		auto fsource = fstring.c_str();
+		std::cout << fsource << std::endl;
+		const GLint flength = fstring.length();
+
+		glShaderSource(fragment, 1, &fsource, &flength);
+		glCompileShader(fragment);
+
+		auto program = glCreateProgram();
+		glAttachShader(program, vertex);
+		glAttachShader(program, fragment);
+		glLinkProgram(program);
+		glValidateProgram(program);
+		glDeleteShader(vertex);
+		glDeleteShader(fragment);
+
+		glUseProgram(program);
+
+		glBindVertexArray(0);
+
+		while (!glfwWindowShouldClose(window))
+		{
+			glfwPollEvents();
+
+			GLCall(glClear(GL_COLOR_BUFFER_BIT));
+			
+			glBindVertexArray(vao);
+
+			GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
+
+			glBindVertexArray(0);
+
+			glfwSwapBuffers(window);
+		}
+
+		glfwDestroyWindow(window);
+		glfwTerminate();
 	}
 }

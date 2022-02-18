@@ -1,3 +1,5 @@
+/*
+// Old deprecated code
 #include <FractionsCore.h>
 #include <FractionsLog.h>
 #include <../Fractions API/Frac.h>
@@ -30,7 +32,6 @@ void on_loop(fractions_core_object* i)
 
 int main()
 {
-
 	fractions_core_context* context = new fractions_core_context;
 	context->window_width = 500;
 	context->window_height = 500;
@@ -50,7 +51,7 @@ int main()
 	std::string source_code = fractions_core_get_file_text_s(
 		"FractionsCore\\resources\\vertexbasic.shader"
 	);
-	
+
 	shader_i.source_code = source_code.c_str();
 	shader_i.type = FRACTIONS_CORE_VERTEX_SHADER;
 
@@ -60,7 +61,7 @@ int main()
 	std::string source_code_i = fractions_core_get_file_text_s(
 		"FractionsCore\\resources\\fragmentbasic.shader"
 	);
-	
+
 	shader_ii.source_code = source_code_i.c_str();
 	shader_ii.type = FRACTIONS_CORE_FRAGMENT_SHADER;
 
@@ -68,12 +69,12 @@ int main()
 
 	fractions_core_shader_program shader
 		= create_fractions_core_shader_program();
-	
+
 	link_fractions_core_shader_fractions_core_shader_program(shader, vertex_shader);
 	link_fractions_core_shader_fractions_core_shader_program(shader, fragment_shader);
 
 	finalize_fractions_core_shader_program(shader);
-	
+
 	delete_fractions_core_shader(vertex_shader);
 	delete_fractions_core_shader(fragment_shader);
 
@@ -99,4 +100,101 @@ int main()
 	append_fractions_core_object(&obj);
 
 	start_fractions_core_loop();
+}
+*/
+
+#include <FractionsCore.h>
+#include <FractionsFiles.h>
+#include <fstd.h>
+
+int main()
+{
+
+#ifndef NO_MAIN
+	log("log!");
+	warn("warn!");
+	err("error!");
+	fatal("fatal!");
+	print("print!");
+
+	// bool check
+	boolean yes = True;
+	if (Bool(yes))
+		std::cout << "hello world" << std::endl;
+
+	// context
+	fractions_core::context context;
+	context.window_resizable = False;
+	// TODO: make this better
+	context.window_dimension = std::make_pair(200, 200);
+	context.window_title = "YES";
+
+	fractions_core::supply_context(&context);
+	fractions_core::update_context();
+
+	// setup
+	fractions_core::make_window();
+	fractions_core::make_engine();
+
+	// scene
+	fractions_core::scene my_scene;
+	my_scene.visible = true;
+	fractions_core::append_scene(my_scene);
+
+	// object
+	fractions_core::object obj;
+
+	constexpr float data[] =
+	{
+		0.0f, 0.0f, 1.0f,
+		0.5f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f
+	};
+
+	obj.verticies = (float*) & data;
+	obj.vertex_count = 3;
+	obj.vertex_size = 3;
+	obj.static_draw = true;
+	obj.loaded = True;
+
+	fractions_core::append_object(obj);
+
+	// shaders
+
+	// TODO: make this work with universal directories
+	in_file vertex_file("vertex.txt");
+	std::string vertex_source = *vertex_file.get_contents();
+	vertex_file.flush();
+
+	in_file fragment_file("fragment.txt");
+	std::string fragment_source = *fragment_file.get_contents();
+	fragment_file.flush();
+
+	fractions_core::shader myShader;
+	myShader.vertex_source = vertex_source;
+	myShader.fragment_source = fragment_source;
+	myShader.loaded = True;
+	fractions_core::append_shader(myShader);
+	fractions_core::create_api_shader(myShader.id, obj.id);
+
+	//my_scene.objects.push_back(obj.id);
+	fractions_core::object_to_scene(obj.id, my_scene.id);
+	context.primary_scene = my_scene.id;
+
+
+	// engine startup
+	fractions_core::engage();
+
+	fractions_core::shutdown();
+
+#else
+
+	// alternatively, to test everything is working properly
+	fractions_core::test_api();
+
+#endif
+
+	std::cout << "end!" << std::endl;
+
+	return EXIT_SUCCESS;
 }

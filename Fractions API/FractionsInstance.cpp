@@ -1,21 +1,13 @@
 #include "FractionsInstance.h"
+#include "boolean.h"
 
 typedef FractionsInstance sn;
-
-FractionsInstance::FractionsInstance()
-{}
-FractionsInstance::~FractionsInstance()
-{
-	end_fractions_core_context();
-}
 
 #define con this->context
 
 void sn::set_window_dimensions(dimensions d)
 {
-	auto [width, height] = d;
-	con.window_width = width;
-	con.window_height = height;
+	con.window_dimension = d;
 }
 
 void sn::set_window_title(std::string& title)
@@ -25,13 +17,9 @@ void sn::set_window_title(std::string& title)
 
 void sn::set_window_resizable(bool x)
 {
-	con.window_resizable = x;
+	con.window_resizable;
 }
 
 void sn::create_window()
 {
-	supply_fractions_core_context(&con);
-	set_fractions_core_context();
-	fractions_core_context_make_window();
-	fractions_core_context_make_engine();
 }

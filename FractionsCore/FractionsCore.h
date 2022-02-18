@@ -1,7 +1,7 @@
 /*
 * this header is part of the fractions project and the main
 * header for the fractions core.
-* This header has HORIBBLE organization.
+* This header has HORRIBLE organization.
 * Most names for anything from macros to functions may be incredibly long.
 * 
 * Target Machine: Windows, x64
@@ -11,7 +11,7 @@
 * are unrelated to fractions core, but required by
 * fractions core.
 * 
-* a rough organisation is this:
+* a rough organization is this:
 * 
 * BUILD MACROS
 * FOREIGN INCLUDE
@@ -23,10 +23,10 @@
 * 
 * ++ ANYTHING ADDITIONAL ++
 * NOTE:
-* Whilst the fractions prroject is mainly targeting windows,
+* Whilst the fractions project is mainly targeting windows,
 * in this header (Fractions Core), there are some macros / preprocessor
 * statements that may or may not help to build / run this on other
-* plattforms / compilers.
+* platforms / compilers.
 */
 
 #pragma once
@@ -474,6 +474,10 @@ void fractions_core_live_uniform_M(fractions_core_object*, const char*, fraction
 */
 
 // new code
+
+// A simple macro to keep all other headers from potentially redefining
+// types etc.
+#define FRACTIONS_CORE
 #define GLEW_STATIC
 
 #include <gl/glew.h>
@@ -491,27 +495,51 @@ void fractions_core_live_uniform_M(fractions_core_object*, const char*, fraction
 #include <vector>
 #include <unordered_map>
 
-typedef std::pair<unsigned, unsigned> dimension;
-typedef enum boolean
-{
-	True = 1, False = 0, Undefined = 2
-} boolean;
-#define undef boolean::Undefined;
-typedef uint64_t uuid; 
+#include "fstd.h"
+#include "FractionsFiles.h"
 
-typedef void(*function_pointer)(void);
+#ifndef NO_FRACTIONS_CORE_ASSERT
+#define ASSERT(X) if (!(X)) __debugbreak();
+#else
+#define ASSERT(X) ;
+#endif
+
+#ifndef NO_FRACTIONS_CORE_OPENGL_ERROR_CHECKING
+
+// TODO: this is horibble, I need to make this better
+inline void GLclearErrors()
+{
+	while (glGetError() != GL_NO_ERROR);
+}
+
+inline bool GLLogCall()
+{
+	while (GLenum error = glGetError())
+		std::cout << "ERROR CODE: " << error << "\nLINE: " << __LINE__ << std::endl;
+	return true;
+}
+
+// TODO: maybe improve this
+#ifndef RELEASE
+#define GLCall(X) GLclearErrors(); \
+					X;\
+					ASSERT(GLLogCall())
+#else
+#define GLCall(x) x;
+#endif
+#endif
 
 namespace fractions_core {
 
 	// uuid
-	
 	uuid generate_uuid();
 
 	// context
 
-	typedef struct scene;
-	typedef struct shader;
-	typedef struct object;
+	struct scene;
+	struct shader;
+	struct object;
+	struct texture;
 
 	typedef struct context
 	{
@@ -529,17 +557,20 @@ namespace fractions_core {
 
 		// engine properties
 		bool engine_active = false;
+		bool engine_alive = false;
 
 		// engine
-		std::unordered_map<uuid, scene&> scenes;
-		std::unordered_map<uuid, shader&> shaders;
-		// is this really neccessary?
-		std::unordered_map<uuid, object&> objects;
-		std::unordered_map<uuid, texture&> textures;
+		std::unordered_map<uuid, scene*> scenes;
+		std::unordered_map<uuid, shader*> shaders;
+		// is this really necessary?
+		std::unordered_map<uuid, object*> objects;
+		std::unordered_map<uuid, texture*> textures;
 
 		// should this really be a vector?
 		// let's keep it fool proof
 		std::vector<function_pointer> on_draw_functions;
+
+		function_pointer on_window_should_close = nullptr;
 
 		// the scene that loads on startup
 		uuid primary_scene;
@@ -548,13 +579,17 @@ namespace fractions_core {
 		uuid current_scene;
 	} fractions_core_context;
 
+	void bind_on_window_should_close(function_pointer);
+
 	// context affectING
-	void supply_context(context&);
+	void supply_context(context*);
 	void update_context();
 
 	// context affectED
 	void make_window();
 	void make_engine();
+
+	void shutdown();
 
 	// (we like star trek)
 	// loads the primary scene and starts the rendering loop
@@ -567,18 +602,19 @@ namespace fractions_core {
 	typedef struct shader
 	{
 		uuid id;
-		std::string raw_text;
+		std::string vertex_source;
+		std::string fragment_source;
 		bool interpreted = false;
 
 		boolean loaded = undef;
-		boolean has_api_object = undef;
+		bool has_api_object = false;
 
-		uint64_t glid;
+		uint64_t api_id;
 	} shader;
 
 	typedef struct texture
 	{
-		const char* texture;
+		const char* tex;
 		// R, G, B, A
 		size_t stride;
 		size_t length;
@@ -616,6 +652,8 @@ namespace fractions_core {
 		boolean loaded = undef;
 		boolean has_api_object = undef;
 
+		bool static_draw = true;
+
 		// api
 
 		// GL -> Vertex Array
@@ -623,7 +661,8 @@ namespace fractions_core {
 		// GL -> Buffer
 		unsigned int API_KEY1;
 		 
-		// not yet implemented #TODO
+		// not yet implemented
+		// TODO: implement normalization (or maybe not)
 		bool expr_normalization = false;
 
 	} object;
@@ -653,6 +692,8 @@ namespace fractions_core {
 
 	void bind_SceneDraw(scene&, function_pointer);
 
+	bool is_scene_loaded(uuid);
+
 	void append_object(object&);
 	void append_scene(scene&);
 	void append_shader(shader&);
@@ -664,6 +705,9 @@ namespace fractions_core {
 	void show_object(uuid);
 	void hide_object(uuid);
 
+	// object, id
+	void object_to_scene(uuid id, uuid s);
+
 	// TODO: Maybe create two seperate functions so that the VAO may exist
 	//		 without the coords in place so that shaders can already be
 	//		 applied.
@@ -671,4 +715,6 @@ namespace fractions_core {
 	// will only work if the object already has an API object
 	void create_api_shader(uuid shader, uuid object);
 	void create_all_api_shader(uuid object);
+
+	void test_api();
 }
