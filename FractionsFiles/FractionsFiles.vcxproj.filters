@@ -15,12 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FFiles.h">
+    <ClInclude Include="FractionsFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="in_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ffutility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FFiles.cpp">
+    <ClCompile Include="in_file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

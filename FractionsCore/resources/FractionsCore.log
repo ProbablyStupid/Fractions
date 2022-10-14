@@ -1,2 +1,105 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(504,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
-  FractionsCore.vcxproj -> C:\Users\thoma\source\repos\FRACTIONS AGAIN AGAIN\x64\Debug\Fractions Core.lib
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(495,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+  FractionsCore.c
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winbase.h(9531,5): warning C5105: macro expansion producing 'defined' has undefined behavior
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(23,62): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(23,62): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(23,90): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(25,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(31,72): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(31,72): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(31,100): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cstdlib(33,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xtr1common(19,1): error C2061: syntax error: identifier 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xtr1common(19,1): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xtr1common(19,1): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xtr1common(235,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(36,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(36,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(36,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(38,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(44,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(44,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(44,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(46,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(52,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(52,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(52,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(54,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(60,78): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(60,78): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(60,106): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(62,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(68,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(68,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(68,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(76,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(88,60): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(88,60): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(88,88): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(90,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(96,60): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(96,60): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(96,88): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(98,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(104,60): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(104,60): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(104,88): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(106,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(112,62): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(112,62): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(112,90): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(114,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(120,77): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(120,77): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(120,105): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(122,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(134,92): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(134,92): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(134,120): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(136,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(142,77): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(142,77): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(142,105): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(144,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(150,52): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(150,52): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(150,80): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(152,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(158,60): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(158,60): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(158,88): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(160,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(166,63): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(166,63): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(166,91): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(168,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(174,68): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(174,68): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(174,96): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(176,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(182,62): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(182,62): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(182,90): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(184,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(190,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(190,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(190,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(192,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(198,61): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(198,61): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(198,89): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(200,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(206,53): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(206,53): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(206,81): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(208,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(214,82): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(214,82): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(214,110): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(216,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(222,76): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(222,76): error C2059: syntax error: ';'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(222,104): error C2449: found '{' at file scope (missing function header?)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(224,1): error C2059: syntax error: '}'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(230,69): error C2061: syntax error: identifier 'noexcept'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\cmath(230,69): fatal error C1003: error count exceeds 100; stopping compilation

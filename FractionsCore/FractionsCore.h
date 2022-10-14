@@ -1,7 +1,7 @@
 /*
 * this header is part of the fractions project and the main
 * header for the fractions core.
-* This header has HORIBBLE organization.
+* This header has HORRIBLE organization.
 * Most names for anything from macros to functions may be incredibly long.
 * 
 * Target Machine: Windows, x64
@@ -11,7 +11,7 @@
 * are unrelated to fractions core, but required by
 * fractions core.
 * 
-* a rough organisation is this:
+* a rough organization is this:
 * 
 * BUILD MACROS
 * FOREIGN INCLUDE
@@ -23,16 +23,16 @@
 * 
 * ++ ANYTHING ADDITIONAL ++
 * NOTE:
-* Whilst the fractions prroject is mainly targeting windows,
+* Whilst the fractions project is mainly targeting windows,
 * in this header (Fractions Core), there are some macros / preprocessor
 * statements that may or may not help to build / run this on other
-* plattforms / compilers.
+* platforms / compilers.
 */
 
 #pragma once
 
-#define GLEW_STATIC
-
+// old deprecated code
+/*
 #include <gl/glew.h>
 #include <gl/wglew.h>
 #include <GLFW/glfw3.h>
@@ -135,9 +135,9 @@ typedef unsigned long long int fractions_core_size;
 
 #ifndef NO_FRACTIONS_CORE_FILE_IO
 
-/* uses the C file API */
+// uses the C file API 
 F_NODISCARD const char* fractions_core_get_file_text_f(const char*);
-/* uses the C++ file API */
+// uses the C++ file API 
 F_NODISCARD std::string fractions_core_get_file_text_s(const char*);
 
 #else
@@ -308,6 +308,7 @@ typedef struct fractions_core_context
 	// both window properties must be defined
 	int window_width, window_height;
 	const char* window_title;
+	bool window_resizable;
 
 	bool window_should_close;
 	basic_action close_event;
@@ -470,3 +471,250 @@ void fractions_core_live_uniform_M(fractions_core_object*, const char*, fraction
 }
 
 #endif
+*/
+
+// new code
+
+// A simple macro to keep all other headers from potentially redefining
+// types etc.
+#define FRACTIONS_CORE
+#define GLEW_STATIC
+
+#include <gl/glew.h>
+#include <gl/wglew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <unordered_map>
+
+#include "fstd.h"
+#include "FractionsFiles.h"
+
+#ifndef NO_FRACTIONS_CORE_ASSERT
+#define ASSERT(X) if (!(X)) __debugbreak();
+#else
+#define ASSERT(X) ;
+#endif
+
+#ifndef NO_FRACTIONS_CORE_OPENGL_ERROR_CHECKING
+
+// TODO: this is horibble, I need to make this better
+inline void GLclearErrors()
+{
+	while (glGetError() != GL_NO_ERROR);
+}
+
+inline bool GLLogCall()
+{
+	while (GLenum error = glGetError())
+		std::cout << "ERROR CODE: " << error << "\nLINE: " << __LINE__ << std::endl;
+	return true;
+}
+
+// TODO: maybe improve this
+#ifndef RELEASE
+#define GLCall(X) GLclearErrors(); \
+					X;\
+					ASSERT(GLLogCall())
+#else
+#define GLCall(x) x;
+#endif
+#endif
+
+namespace fractions_core {
+
+	// uuid
+	uuid generate_uuid();
+
+	// context
+
+	struct scene;
+	struct shader;
+	struct object;
+	struct texture;
+
+	typedef struct context
+	{
+		// window properties
+		dimension window_dimension;
+		const char* window_title;
+		boolean window_resizable;
+
+		// todo
+		boolean fullscreen;
+		
+		bool window_should_close;
+
+		GLFWwindow* api_window;
+
+		// engine properties
+		bool engine_active = false;
+		bool engine_alive = false;
+
+		// engine
+		std::unordered_map<uuid, scene*> scenes;
+		std::unordered_map<uuid, shader*> shaders;
+		// is this really necessary?
+		std::unordered_map<uuid, object*> objects;
+		std::unordered_map<uuid, texture*> textures;
+
+		// should this really be a vector?
+		// let's keep it fool proof
+		std::vector<function_pointer> on_draw_functions;
+
+		function_pointer on_window_should_close = nullptr;
+
+		// the scene that loads on startup
+		uuid primary_scene;
+
+		// the scene that is currently being displayed
+		uuid current_scene;
+	} fractions_core_context;
+
+	void bind_on_window_should_close(function_pointer);
+
+	// context affectING
+	void supply_context(context*);
+	void update_context();
+
+	// context affectED
+	void make_window();
+	void make_engine();
+
+	void shutdown();
+
+	// (we like star trek)
+	// loads the primary scene and starts the rendering loop
+	void engage();
+
+	// engine
+
+	void bind_draw(function_pointer);
+
+	typedef struct shader
+	{
+		uuid id;
+		std::string vertex_source;
+		std::string fragment_source;
+		bool interpreted = false;
+
+		boolean loaded = undef;
+		bool has_api_object = false;
+
+		uint64_t api_id;
+	} shader;
+
+	typedef struct texture
+	{
+		const char* tex;
+		// R, G, B, A
+		size_t stride;
+		size_t length;
+		uuid id;
+
+		boolean loaded = undef;
+		boolean has_api_object = undef;
+	} texture;
+
+	typedef struct object
+	{
+		uuid id;
+
+		// x, y, z
+		// location of the object in the local coordinate system
+		float* location;
+
+		std::vector<uuid> shaders;
+
+		bool visible;
+		bool acting = false;
+
+		std::vector<function_pointer> on_draw;
+
+		unsigned int api_id;
+
+		// x, y, z
+		float* verticies;
+		// how many floats one vertex is
+		unsigned vertex_size;
+		// amount of VERTICIES e.g. one coordinate
+		// to get the total size: vertex_size * vertex_count
+		uint64_t vertex_count;
+
+		boolean loaded = undef;
+		boolean has_api_object = undef;
+
+		bool static_draw = true;
+
+		// api
+
+		// GL -> Vertex Array
+		unsigned int API_KEY0;
+		// GL -> Buffer
+		unsigned int API_KEY1;
+		 
+		// not yet implemented
+		// TODO: implement normalization (or maybe not)
+		bool expr_normalization = false;
+
+	} object;
+
+	void bind_ObjectDraw(object&, function_pointer);
+
+	typedef struct scene
+	{
+		uuid id;
+
+		bool visible = false;
+		std::vector<uuid> objects;
+
+		std::vector<function_pointer> on_draw;
+
+		// scenes do not have a boolean loaded as they do not need one
+		// they are simply an assortment of objects
+		// the objects can be loaded
+		// and if all the objects are loaded then the scene is effectively
+		// loaded. But then the `boolean` `loaded` wouldn't make any
+		// sense, as it is just the check of whether every objec is loaded.
+		// Therefore, it's easier to simply call a function to check if it
+		// is loaded, then have a variable that needs the call of a function.
+		// (This system may get redesigned in the future however, because
+		// I may have thought of a way to outsmart myself).
+	} scene;
+
+	void bind_SceneDraw(scene&, function_pointer);
+
+	bool is_scene_loaded(uuid);
+
+	void append_object(object&);
+	void append_scene(scene&);
+	void append_shader(shader&);
+	void append_texture(texture&);
+
+	// TODO : figure this one out
+	void show_scene(uuid);
+	void hide_scene(uuid);
+	void show_object(uuid);
+	void hide_object(uuid);
+
+	// object, id
+	void object_to_scene(uuid id, uuid s);
+
+	// TODO: Maybe create two seperate functions so that the VAO may exist
+	//		 without the coords in place so that shaders can already be
+	//		 applied.
+	void create_api_object(uuid);
+	// will only work if the object already has an API object
+	void create_api_shader(uuid shader, uuid object);
+	void create_all_api_shader(uuid object);
+
+	void test_api();
+}
